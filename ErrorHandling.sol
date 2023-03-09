@@ -15,12 +15,14 @@ contract ErrorHandling {
         value = newValue;
     }
 
-    function withdraw() public {
-        require(msg.sender == owner, "Only the owner can withdraw!");
-        require(value>0, "the contract has no funds to withdraw");
-        uint amt = value;
-        value = 0;
-        
+    function withdraw(uint256 amount) public {
+        require(amount <= balance, "Insufficient balance");
+        balance -= amount;
+        bool success = payable(msg.sender).send(amount);
+        if (!success) {
+            balance += amount;
+            revert("Failed to transfer funds");
+        }
     }
 
     function triggerRevert() public {
