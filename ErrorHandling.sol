@@ -24,9 +24,4 @@ contract ErrorHandling {
             revert("Failed to transfer funds");
         }
     }
-
-    function triggerRevert() public {
-        require(msg.sender == owner, "Only the owner can triggert a revert");
-        require("this function reverts");
-    }
 }
